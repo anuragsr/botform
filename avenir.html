@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html ng-app="botform">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>Bot Form Avenir</title>	
+	<link rel="stylesheet" type="text/css" href="css/headfoot.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">  
+</head>
+<style type="text/css">
+    @font-face {
+      font-family: 'Avenir';
+        src: url('font/Avenir Roman.otf') format('opentype');
+    }
+    body{
+      font-family: 'Avenir';
+      font-weight: 100;
+    }
+    .title{
+      background: #5ac8fa;
+    }
+    .footer{
+      background: #5ac8fa;      
+    }
+    .from-me{
+      background: #5ac8fa;            
+    }
+    .from-me:before {
+      border-right: 20px solid #5ac8fa;
+    }
+    .opt-btn button{
+      font-family: 'Avenir';
+    }
+  </style>
+<body ng-cloak ng-controller="botCtrl">	
+	<div class="home-page">
+		<div class="content">
+      <div class="title">
+  			<div class="title-container">
+          <h1>Welcome to Bot Form</h1>
+    			<div class="content-text">				          
+              <h3>The answer to your query.</h3>
+    				<br/>
+          </div>			
+        </div>
+        <div class="perso">
+            <div class="eve">
+              <div class="head">
+                <div class="face"></div>
+              </div>
+              <div class="body">
+                <div class="headshadow"></div>
+              </div>
+            </div>
+            <div class="shadow"></div>
+        </div>
+      </div> 
+      <div ng-init="startBot()" class="chatbox">
+        <section class="message-container">
+          <b>
+            <div class="msg-contain" ng-repeat="message in questions track by $index"> 
+                <div ng-repeat="question in message.q track by $index">
+                  <div ng-if="question.type == 'text'">
+                    <div class="msg from-them"> 
+                        <div ng-hide="question.loading">
+                          {{question.value}}
+                        </div>
+                        <div ng-show="question.loading" class="typing-indicator">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                    </div>
+                  </div>
+                  <div ng-if="question.type == 'card'">
+                    <div class="msg from-them">
+                      <div ng-hide="question.loading">
+                        <br/>
+                        {{question.options.title}}
+                        <br/>
+                        <br/>
+                        <div class="giftcard">
+                            <div class="giftcard-logo">
+                              <img src="img/logo.png">
+                            </div>
+                            <div class="giftcard-footer">
+                              <div style="float:left;">
+                                <span style="color:#cc199d; font-size:18px; position:relative; top:-5px;">{{question.options.offer}}</span><br/>
+                                <div style="color:#cc199d; font-size:14px; position:relative; top:-5px;">${{question.options.amount}}.00</div>
+                                <br/>
+                              </div>
+                              <div style="float:right; margin-right:20px;">
+                                <a href="#">
+                                  <button class="giftcard-buy">{{question.options.buttonText}}</button>
+                                </a>
+                              </div>
+                            </div>
+                            <br/>
+                        </div>
+                      </div>
+                      <div ng-show="question.loading" class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="clear"></div>  
+                <div ng-if="message.a != ''">
+                  <div ng-if="message.a.type == 'text'">
+                    <div class="msg from-me">
+                      <p>
+                        {{message.a.value}}
+                        <span ng-click="undoReply()" class="close-btn" ng-if="message.a.cancel">
+                          x
+                        </span>  
+                      </p>
+                    </div>                
+                  </div>
+                  <div ng-if="message.a.type == 'rating'">
+                    <div class="msg from-me">
+                      <div class="rating-img-contain">
+                        <div class="rating-img" ng-repeat="star in getNum(message.a.value) track by $index">
+                            <img src="img/star2.png">
+                          </div>
+                      </div>
+                    </div>                
+                  </div>
+                 
+                </div>
+                <div class="clear"></div> 
+            </div>
+             <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+          </b>
+        </section>  
+      </div>     
+    </div>
+  </div>
+  	<div class="footer clearfix">
+      <div class="opt-btn" ng-repeat="option in options track by $index">       
+        <div ng-if="option.type == 'text'">
+            <button ng-click="addAnswer(option)"><b>{{ option.value }}</b></button>
+        </div>
+        <div ng-if="option.type == 'input'">
+          <div class="opt-btn">
+            <button>
+                <input type="text" required class="form-input" ng-model="option.value" name="option.name" placeholder="Enter {{option.name}}">
+            </button>
+            <button ng-click="addAnswer(option)"><b>Go</b></button>
+          </div>
+        </div>
+        <div ng-if="option.type == 'date'">
+          <div class="opt-btn">
+            <button>
+                <input style="width: 200px;" type="date" required class="form-input" ng-model="option.value" name="option.name" placeholder="Enter {{option.name}}">
+            </button>
+            <button ng-click="addAnswer(option)"><b>Go</b></button>
+          </div>
+        </div>
+        <div ng-if="option.type == 'rating'">
+          <span class="rating">
+              <!-- 
+              <span ng-repeat="star in option.stars track by $index">
+                <input type="radio" class="rating-input"
+                        id="rating-input-1-{{star+1}}" name="rating-input-1" value="{{star+1}}"/>
+                <label for="rating-input-1-{{star+1}}" class="rating-star"></label>
+              </span>
+               -->
+              <input type="radio" class="rating-input"
+                      id="rating-input-1-5" name="rating-input-1" value="5"/>
+              <label for="rating-input-1-5" class="rating-star"></label>
+              <input type="radio" class="rating-input"
+                      id="rating-input-1-4" name="rating-input-1" value="4"/>
+              <label for="rating-input-1-4" class="rating-star"></label>
+              <input type="radio" class="rating-input"
+                      id="rating-input-1-3" name="rating-input-1" value="3">/>
+              <label for="rating-input-1-3" class="rating-star"></label>
+              <input type="radio" class="rating-input"
+                      id="rating-input-1-2" name="rating-input-1" value="2">/>
+              <label for="rating-input-1-2" class="rating-star"></label>
+              <input type="radio" class="rating-input"
+                      id="rating-input-1-1" name="rating-input-1" value="1">/>
+              <label for="rating-input-1-1" class="rating-star"></label>
+          </span>
+          <button ng-click="addAnswer(option)"><b>Go</b></button>
+        </div>
+      </div>
+    <div class="opt-btn">
+      <button ng-click="undoReply()"><b>Undo</b></button>
+    </div>
+    <div class="opt-btn">
+      <button ng-click="sendForm()"><b>Submit</b></button>
+    </div>
+	</div>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/TweenMax.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/ScrollToPlugin.js"></script>
+</body>
+</html>
+
+<!-- undo button, input text, ratings -->

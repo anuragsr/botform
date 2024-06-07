@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Avenir';
+    src: url('font/Avenir Roman.otf') format('opentype');
+}
+.content-container{
+	background: rgba(221,221,221,0.6);
+	font-family: 'Avenir';
+	display: table;
+	position: fixed;
+	top:0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+}
+.content{
+	zoom:2;
+	line-height: 35px;
+	display: table-cell;
+	vertical-align: middle;
+	color: black;
+}

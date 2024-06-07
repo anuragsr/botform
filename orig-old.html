@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="botform">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>Bot Form</title>	
+	<link rel="stylesheet" type="text/css" href="css/headfoot.css">
+  <link rel="stylesheet" type="text/css" href="css/index-copy.css">  
+</head>
+<body ng-controller="botCtrl">	
+  <form accept-charset="UTF-8" method="POST">
+	<div class="home-page">
+		<div class="content">
+      <div class="title">
+  			<div class="title-container">
+          <h1>Welcome to Bot Form</h1>
+    			<div class="content-text">				          
+              <h3>The answer to your query.</h3>
+    				<br/>
+          </div>			
+        </div>
+        <div class="perso">
+            <div class="eve">
+              <div class="head">
+                <div class="face"></div>
+              </div>
+              <div class="body">
+                <div class="headshadow"></div>
+              </div>
+            </div>
+            <div class="shadow"></div>
+        </div>
+      </div>         
+      <div ng-cloak ng-init="startBot()" class="chatbox">
+        <section>
+          <b>
+            <div class="msg-contain" ng-repeat="message in questions track by $index"> 
+                <div ng-repeat="question in message.q">
+                  <div class="msg from-them">
+                    <p>{{question}}</p>
+                  </div>
+                </div>
+                <div class="clear"></div>  
+                <div ng-repeat="answer in message.a">
+                  <div class="msg from-me">
+                    <p>{{answer}}</p>
+                  </div>
+                </div>
+                <div class="clear"></div>                
+            </div>
+            <br/>
+          </b>
+        </section>  
+      </div>     
+    </div>
+  </div>
+	<div class="footer clearfix">
+    <div class="opt-btn" ng-repeat="option in options track by $index"> 
+      <button type="button"  ng-click="addAnswer(option)"><b>{{ option }}</b></button>
+    </div>
+    <div class="opt-btn">
+      <button type="button" ng-click="undoReply()"><b>Undo</b></button>
+      <button type="submit" ng-click="sendForm()"><b>Submit</b></button>
+    </div>
+	</div>
+  </form>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/TweenMax.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/ScrollToPlugin.js"></script>
+</body>
+</html>
+
+<!-- undo button, input text, ratings -->
